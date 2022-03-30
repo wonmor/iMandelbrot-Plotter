@@ -1,2 +1,2 @@
-# iDino-Game
-iDino is a Dino game that is a lot more dynamic and exciting!
+# iMandelbrot
+iMandelbrot is a tool made out of PyGame that visualizes the nature of a Mandelbrot fractal!
