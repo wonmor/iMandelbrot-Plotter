@@ -3,8 +3,8 @@ import pygame as pg
 import pygame_gui
 
 GUI = pygame_gui.elements
-WIDTH = 1280
-HEIGHT = 1000
+WIDTH = 500
+HEIGHT = 500
 RE_START = -2
 RE_END = 1
 IM_START = -1
@@ -42,23 +42,17 @@ class FunctionPlotter(object):
         max_iter = 80
         print("Plotting the fractal...")
         for x in range(0, WIDTH):
+            print(x)
             for y in range(0, HEIGHT):
+                print(y)
                 # Map pixel coordinates to a complex number, thanks to a built-in python function complex()
                 self.c = complex(RE_START + (x / WIDTH) * (RE_END - RE_START),
                                  IM_START + (y / HEIGHT) * (IM_END - IM_START))
 
-                print("c value: " + self.c)
-
                 self.m = self.mandelbrot_eqt(self.c)
-
-                print ("m value: " + self.m)
 
                 # Set the color in correlation with the number of iterations; 255 is the max. value in the grayscale spectrum...
                 self.color = 255 - int(self.m * 255 / max_iter)
-
-                print("color: " + self.color)
-
-                print('x and y: ' + (x, y))
 
                 screen.set_at((x, y), (self.color, self.color, self.color))
 
