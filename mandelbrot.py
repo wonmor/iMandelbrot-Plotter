@@ -27,7 +27,7 @@ class ScreenManager(object):
     @staticmethod
     def update_screen_resolution(display_x, display_y):
         global screen
-        screen = pg.display.set_mode([display_x, display_y])
+        screen = pg.display.set_mode([display_x, display_y], pg.DOUBLEBUF)
 
     def update(self):
         screen.fill((255, 255, 255))
@@ -37,29 +37,37 @@ class ScreenManager(object):
 
 class FunctionPlotter(object):
 
-    def plot_fractal(self):
-        global max_iter
-        max_iter = 20
-        print("Plotting the fractal...")
-        for x in range(0, WIDTH):
-            for y in range(0, HEIGHT):
-                print(f'x: {x} | y: {y}')
-                # Map pixel coordinates to a complex number, thanks to a built-in python function complex()
-                self.c = complex(RE_START + (x / WIDTH) * (RE_END - RE_START),
-                                 IM_START + (y / HEIGHT) * (IM_END - IM_START))
+    def __init__(self, game_m):
+        self.y_axis = HEIGHT // 2
+        self.x_axis = WIDTH // 1.5 + 140
+        self.scale = 300
+        self.max_iter = 50
+        self.game_m = game_m
 
-                self.m = self.mandelbrot_eqt(self.c)
+    def plot_fractal(self):
+        print("Plotting the fractal...")
+        for x in range(WIDTH):
+            for y in range(HEIGHT // 2 + 1):
+                # print(f'x: {x} | y: {y}')
+                # Map pixel coordinates to a complex number, thanks to a built-in python function complex()
+                self.c = complex(float(x - self.x_axis) / self.scale,
+                                 float(y - self.y_axis) / self.scale)
+
+                self.m = self.mandelbrot_eqt(self.c, self.max_iter)
 
                 # Set the color in correlation with the number of iterations; 255 is the max. value in the grayscale spectrum...
-                self.color = 255 - int(self.m * 255 / max_iter)
+                self.color = 255 - int(self.m * 255 / self.max_iter)
 
                 screen.set_at((x, y), (self.color, self.color, self.color))
+                screen.set_at((x, HEIGHT - y), (self.color, self.color, self.color))
 
                 pg.display.update()
 
+        self.game_m.fractal_plotted = True
+
     # EQUATION LINK: https://simple.wikipedia.org/wiki/Mandelbrot_set
     @staticmethod
-    def mandelbrot_eqt(c):
+    def mandelbrot_eqt(c, max_iter):
         z = 0
         n = 0
         while abs(z) <= 2 and n < max_iter:
@@ -76,11 +84,13 @@ class GameManager(object):
         self.frame_rate = 60
         self.game_running = True
         self.screen_m = ScreenManager(WIDTH, HEIGHT, self)
+        self.fractal_plotted = False
         self.main_loop()
 
     def update(self):
-        fp = FunctionPlotter()
-        fp.plot_fractal()
+        fp = FunctionPlotter(self)
+        if not self.fractal_plotted:
+            fp.plot_fractal()
 
     def main_loop(self):
         '''
