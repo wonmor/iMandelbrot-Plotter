@@ -39,12 +39,11 @@ class FunctionPlotter(object):
 
     def plot_fractal(self):
         global max_iter
-        max_iter = 80
+        max_iter = 20
         print("Plotting the fractal...")
         for x in range(0, WIDTH):
-            print(x)
             for y in range(0, HEIGHT):
-                print(y)
+                print(f'x: {x} | y: {y}')
                 # Map pixel coordinates to a complex number, thanks to a built-in python function complex()
                 self.c = complex(RE_START + (x / WIDTH) * (RE_END - RE_START),
                                  IM_START + (y / HEIGHT) * (IM_END - IM_START))
@@ -55,6 +54,8 @@ class FunctionPlotter(object):
                 self.color = 255 - int(self.m * 255 / max_iter)
 
                 screen.set_at((x, y), (self.color, self.color, self.color))
+
+                pg.display.update()
 
     # EQUATION LINK: https://simple.wikipedia.org/wiki/Mandelbrot_set
     @staticmethod
@@ -93,7 +94,6 @@ class GameManager(object):
                 self.screen_m.ui_manager.process_events(event)
             self.screen_m.update()
             self.update()
-            pg.display.update()
         pg.quit()
 
 
