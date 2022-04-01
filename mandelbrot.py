@@ -62,6 +62,7 @@ class FunctionPlotter(object):
 
                 screen.set_at((x, y), (self.color, self.color, self.color))
 
+    # EQUATION LINK: https://simple.wikipedia.org/wiki/Mandelbrot_set
     @staticmethod
     def mandelbrot_eqt(c):
         z = 0
