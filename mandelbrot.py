@@ -3,8 +3,12 @@ import pygame as pg
 import pygame_gui
 
 GUI = pygame_gui.elements
-WIDTH = 500
-HEIGHT = 500
+WIDTH = 1280
+HEIGHT = 1000
+RE_START = -2
+RE_END = 1
+IM_START = -1
+IM_END = 1
 
 
 # Pygame has built-in collider detection for rect type objects
@@ -15,7 +19,7 @@ class ScreenManager(object):
     def __init__(self, display_x, display_y, game_m):
         self.display_x = display_x
         self.display_y = display_y
-        self.ui_manager = pygame_gui.UIManager((800, 600))
+        self.ui_manager = pygame_gui.UIManager((WIDTH, HEIGHT))
         pg.display.set_caption('iMandelbrot')
         self.update_screen_resolution(self.display_x, self.display_y)
         self.game_m = game_m
@@ -33,48 +37,39 @@ class ScreenManager(object):
 
 class FunctionPlotter(object):
 
-    def __init__(self):
-        self.max_iter = 100
-        self.plot_fractal()
+    def plot_fractal(self):
+        global max_iter
+        max_iter = 80
+        print("Plotting the fractal...")
+        for x in range(0, WIDTH):
+            for y in range(0, HEIGHT):
+                # Map pixel coordinates to a complex number, thanks to a built-in python function complex()
+                self.c = complex(RE_START + (x / WIDTH) * (RE_END - RE_START),
+                                 IM_START + (y / HEIGHT) * (IM_END - IM_START))
+
+                print("c value: " + self.c)
+
+                self.m = self.mandelbrot_eqt(self.c)
+
+                print ("m value: " + self.m)
+
+                # Set the color in correlation with the number of iterations; 255 is the max. value in the grayscale spectrum...
+                self.color = 255 - int(self.m * 255 / max_iter)
+
+                print("color: " + self.color)
+
+                print('x and y: ' + (x, y))
+
+                screen.set_at((x, y), (self.color, self.color, self.color))
 
     @staticmethod
-    def normalize(values, actual_bounds, desired_bounds):
-        return [desired_bounds[0] + (x - actual_bounds[0]) * (desired_bounds[1] - desired_bounds[0]) / (actual_bounds[1] - actual_bounds[0]) for x in values]
-
-    def plot_fractal(self):
-        for x in range(WIDTH):
-            for y in range(HEIGHT):
-                self.a = self.normalize([x], (0, WIDTH), (-2, 2))[0]
-                self.b = self.normalize([y], (0, HEIGHT), (-2, 2))[0]
-
-                self.n = 0
-                self.z = 0
-
-                self.ca = self.a
-                self.cb = self.b
-
-                while self.n < 100:
-                    self.aa = self.a ** 2 - self.b ** 2
-                    self.bb = 2 * self.a * self.b
-
-                    self.a = self.aa + self.ca
-                    self.b = self.bb + self.ca
-
-                    if abs(self.a + self.b) > 16:
-                        break
-
-                    self.n += 1
-
-                    self.hue = self.normalize(
-                        [self.n], (0, self.max_iter), (0, 1))[0]
-
-                    self.hue = self.normalize(
-                        [math.sqrt(self.hue)], (0, 1), (0, 255))[0]
-
-                    if self.n == self.max_iter:
-                        self.hue = 0
-
-                    screen.set_at((x, y), (self.hue, self.hue, self.hue))
+    def mandelbrot_eqt(c):
+        z = 0
+        n = 0
+        while abs(z) <= 2 and n < max_iter:
+            z = z ** 2 + c
+            n += 1
+        return n
 
 
 class GameManager(object):
@@ -89,6 +84,7 @@ class GameManager(object):
 
     def update(self):
         fp = FunctionPlotter()
+        fp.plot_fractal()
 
     def main_loop(self):
         '''
