@@ -10,7 +10,7 @@
 
 For the sake of **optimization**, **iMandelbrot** only generates the coordinates above the x-axis — basically duplicating to the corresponding coordinates below the horizontal line.
 
-<img width="2000" alt="Screen Shot 2022-04-01 at 2 15 24 PM" src="https://user-images.githubusercontent.com/35755386/161319779-1b2c7672-d808-4f66-a483-b41a04497bd1.png">
+<img width="800" alt="Screen Shot 2022-04-01 at 2 15 24 PM" src="https://user-images.githubusercontent.com/35755386/161319779-1b2c7672-d808-4f66-a483-b41a04497bd1.png">
 
 <p float="left">
   <img width="400" alt="Screen Shot 2022-04-02 at 12 35 14 AM" src="https://user-images.githubusercontent.com/35755386/161366479-e44f9d54-94b6-4aed-b1b9-301bb857d34c.png"> 
