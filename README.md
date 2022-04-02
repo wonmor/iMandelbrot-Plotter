@@ -10,11 +10,11 @@
 
 For the sake of **optimization**, **iMandelbrot** only generates the coordinates above the x-axis — basically duplicating to the corresponding coordinates below the horizontal line.
 
-<img width="800" alt="Screen Shot 2022-04-02 at 1 26 37 PM" src="https://user-images.githubusercontent.com/35755386/161394343-fbd4086c-8990-4091-a175-37a529f15bf5.png">
+<img float="center" width="800" alt="Screen Shot 2022-04-02 at 1 26 37 PM" src="https://user-images.githubusercontent.com/35755386/161394343-fbd4086c-8990-4091-a175-37a529f15bf5.png">
 
-<img width="800" alt="Screen Shot 2022-04-01 at 2 15 24 PM" src="https://user-images.githubusercontent.com/35755386/161319779-1b2c7672-d808-4f66-a483-b41a04497bd1.png">
+<img float="center" width="800" alt="Screen Shot 2022-04-01 at 2 15 24 PM" src="https://user-images.githubusercontent.com/35755386/161319779-1b2c7672-d808-4f66-a483-b41a04497bd1.png">
 
-<p float="left">
+<p float="center">
   <img width="400" alt="Screen Shot 2022-04-02 at 12 35 14 AM" src="https://user-images.githubusercontent.com/35755386/161366479-e44f9d54-94b6-4aed-b1b9-301bb857d34c.png"> 
   <img width="400" alt="Screen Shot 2022-04-02 at 12 36 55 AM" src="https://user-images.githubusercontent.com/35755386/161366481-94a21a58-4b4b-4c26-81f8-26fd9cd4a3c1.png">
 </p>
