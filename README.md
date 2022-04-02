@@ -1,6 +1,8 @@
 # iMandelbrot
 **iMandelbrot** is a tool made out of **PyGame** that visualizes the nature of a **Mandelbrot** fractal!
 
+For the sake of **optimization**, **iMandelbrot** only generates the coordinates above the x-axis — basically copying and pasting the corresponding coordinates below the horizontal line.
+
 ![logo](https://user-images.githubusercontent.com/35755386/161361789-583ccb1e-7786-4b43-a7b3-f1d0503d7e75.png)
 
 ---
