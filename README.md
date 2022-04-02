@@ -3,7 +3,7 @@
 
 ![logo](https://user-images.githubusercontent.com/35755386/161361789-583ccb1e-7786-4b43-a7b3-f1d0503d7e75.png)
 
-DEVELOPED AND MAINTAINED BY **JOHN SEONG** • **MIT** LICENSE
+***DEVELOPED** AND **MAINTAINED** BY **JOHN SEONG** • **MIT** LICENSE*
 
 ---
 ## Why Our Product Is Sexier Than Others
