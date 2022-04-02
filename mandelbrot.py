@@ -1,6 +1,8 @@
 import pygame as pg
 
-# FONT = pg.font.Font('fonts/LeagueSpartan-SemiBold.ttf', 32)
+'''
+CONSTANTS
+'''
 
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
@@ -16,7 +18,6 @@ WINDOW_BAR_BUTTON_SIZE = 15
 WINDOW_BAR_BUTTON_GAP = 20
 WINDOW_BAR_TITLE_SIZE = 45
 
-# Is the actual name of the colour according to SchemeColor.com
 PERSIAN_RED = (202, 48, 47)
 ASIAN_YELLOW = (252, 194, 1)  # Just a joke (I am Asian btw)
 TRUDEAU_GREEN = (19, 135, 21)  # Yes
@@ -27,6 +28,7 @@ BLEACHED_WHITE = (255, 255, 255)
 
 EQUATION_LABEL = 'EQUATION_LABEL'
 EQUATION_CONTENT = 'EQUATION_CONTENT'
+START_BUTTON = 'START_BUTTON'
 
 
 # Pygame has built-in collider detection for rect type objects
@@ -114,7 +116,8 @@ class ScreenManager(object):
 
         screen.blit(self.windowbar_title, self.windowbar_title_rect)
 
-    def display_console_content(self, state, equation='', coordinates='', whether_final=False):
+    # Handles the individual behaviour of buttons and different UI elements
+    def display_console_content(self, state, equation='', coordinates='', whether_final=False, whether_hover=False):
         match state:
             case 'EQUATION_LABEL':
 
@@ -165,6 +168,42 @@ class ScreenManager(object):
                 screen.blit(self.equation_label, self.equation_rect)
                 screen.blit(self.coordinate_label, self.coordinate_rect)
 
+            case 'START_BUTTON':
+
+                self.startbutton_container_rect = pg.Rect(
+                    (SCREEN_WIDTH // 2) - 100, (SCREEN_HEIGHT // 8) * 6.8, 200, 50)
+                self.startbutton_nested_container_rect = pg.Rect(
+                    (SCREEN_WIDTH // 2) - 95, (SCREEN_HEIGHT // 8) * 6.85, 190, 40)
+
+                if whether_hover == False:
+
+                    pg.draw.rect(screen, BLEACHED_WHITE,
+                                 self.startbutton_container_rect)
+                    pg.draw.rect(screen, JET_BLACK,
+                                 self.startbutton_nested_container_rect)
+
+                    self.startbutton_label = self.mono_font_bold.render(
+                        'START PLOTTING', True, BLEACHED_WHITE)
+                    self.startbutton_rect = self.startbutton_label.get_rect()
+
+                    self.startbutton_rect.center = (
+                        SCREEN_WIDTH // 2, self.startbutton_nested_container_rect.centery)
+
+                    screen.blit(self.startbutton_label, self.startbutton_rect)
+
+                else:
+                    pg.draw.rect(screen, BLEACHED_WHITE, pg.Rect(
+                        self.startbutton_container_rect), self.startbutton_nested_container_rect.y)
+
+                    self.startbutton_label = self.mono_font_bold.render(
+                        'START PLOTTING', True, JET_BLACK)
+                    self.startbutton_rect = self.startbutton_label.get_rect()
+
+                    self.startbutton_rect.center = (
+                        SCREEN_WIDTH // 2, self.startbutton_nested_container_rect.centery)
+
+                    screen.blit(self.startbutton_label, self.startbutton_rect)
+
 
 class FunctionPlotter(object):
 
@@ -180,6 +219,8 @@ class FunctionPlotter(object):
 
     def plot_fractal(self):
         print("Plotting the fractal...")
+        self.game_m.fractal_gen_in_progress = True
+
         for x in range(WIDTH + 1):
             for y in range(HEIGHT // 2 + 1):
                 self.coordinates = f'x: {x} | y: {y}'
@@ -244,14 +285,63 @@ class FunctionPlotter(object):
         return [n, equation]
 
 
+class EventManager(object):
+
+    def __init__(self, game_m, screen_m):
+        self.game_m = game_m
+        self.screen_m = screen_m
+
+        self.startbutton_container_rect = pg.Rect(
+            (SCREEN_WIDTH // 2) - 100, (SCREEN_HEIGHT // 8) * 6.8, 200, 50)
+
+    def key_bindings(self):
+        self.mouse_pos = pg.mouse.get_pos()
+
+        # Determine whether the mouse pointer is within the boundary of the start button or not... self.mouse_pos[0] => mouse's x position / self.mouse_pos[1] => mouse's y position
+        self.whether_mouse_bound_x = self.startbutton_container_rect.x <= self.mouse_pos[
+            0] <= self.startbutton_container_rect.x + self.startbutton_container_rect.width
+        self.whether_mouse_bound_y = self.startbutton_container_rect.y <= self.mouse_pos[
+            1] <= self.startbutton_container_rect.y + self.startbutton_container_rect.height
+
+        for self.event in pg.event.get():
+            if self.event.type == pg.QUIT:
+                self.game_m.game_running = False
+
+            if self.event.type == pg.MOUSEBUTTONDOWN:
+
+                # If the start button is pressed...
+                if self.whether_mouse_bound_x and self.whether_mouse_bound_y:
+                    self.game_m.whether_default_show = False
+
+                    pg.draw.rect(screen, JET_BLACK,
+                                 self.screen_m.equation_rect)
+                    pg.draw.rect(screen, JET_BLACK,
+                                 self.screen_m.coordinate_rect)
+
+                    # Play the background music...
+                    pg.mixer.music.load('music/guitar.mp3')
+                    pg.mixer.music.play(-1)
+
+                    # Start plotting the fractal...
+                    fp.plot_fractal()
+
+    def button_animations(self):
+
+        if self.whether_mouse_bound_x and self.whether_mouse_bound_y:
+            # Highlight the button when mouse pointer is hovering above...
+            self.screen_m.display_console_content(
+                START_BUTTON, '', '', False, True)
+
+        else:
+            # Un-highlight the button when mouse pointer is outside of the boundary...
+            self.screen_m.display_console_content(
+                START_BUTTON, '', '', False, False)
+
+
 class GameManager(object):
 
     def __init__(self):
         pg.init()
-
-        # Play the background music...
-        pg.mixer.music.load('music/guitar.mp3')
-        pg.mixer.music.play(-1)
 
         self.clock = pg.time.Clock()
         self.screen_m = ScreenManager(self)
@@ -261,6 +351,7 @@ class GameManager(object):
         self.game_running = True
         self.fractal_plotted = False
         self.show_finished = False
+        self.fractal_gen_in_progress = False
 
         self.logo_img = pg.image.load('logo.png')
         self.font = pg.font.Font('fonts/LeagueSpartan-ExtraLight.ttf', 21)
@@ -270,10 +361,16 @@ class GameManager(object):
 
         screen.fill(BLEACHED_WHITE)
 
+        self.event_m = EventManager(self, self.screen_m)
+
+        self.whether_default_show = True
+
         self.main_loop()
 
     def update(self):
-        self.fp = FunctionPlotter(self, self.screen_m)
+        global fp
+        fp = FunctionPlotter(self, self.screen_m)
+
         # If the fractal is not formed yet...
         if not self.fractal_plotted:
             # Placeholder rectangle to cover the area where the fractal will be generated
@@ -283,7 +380,8 @@ class GameManager(object):
             # Display the top bar
             pg.draw.rect(screen, BARELY_GRAY, pg.Rect(0, 0, SCREEN_WIDTH, 30))
 
-            self.top_bar_label = self.screen_m.font_bold.render('iMandelbrot', True, JET_BLACK)
+            self.top_bar_label = self.screen_m.font_bold.render(
+                'iMandelbrot', True, JET_BLACK)
 
             self.top_bar_rect = self.top_bar_label.get_rect()
 
@@ -311,7 +409,11 @@ class GameManager(object):
 
             screen.blit(self.credit_label, self.credit_rect)
 
-            self.fp.plot_fractal()
+            if self.whether_default_show:
+                self.screen_m.display_console_content(
+                    EQUATION_CONTENT, 'Zn+1 = (Zn)^2 + C', 'x: ALL POINTS | y: ALL POINTS', True)
+
+            # fp.plot_fractal()
 
             self.show_finished = True
 
@@ -323,7 +425,7 @@ class GameManager(object):
             self.screen_m.display_console_content(EQUATION_LABEL)
 
             self.screen_m.display_console_content(
-                EQUATION_CONTENT, 'Zn+1 = Zn^2 + C', 'x: ALL POINTS | y: ALL POINTS', True)
+                EQUATION_CONTENT, 'Zn+1 = (Zn)^2 + C', 'x: ALL POINTS | y: ALL POINTS', True)
 
             pg.display.update()
 
@@ -335,12 +437,13 @@ class GameManager(object):
         '''
         while self.game_running == True:
             self.time_delta = self.clock.tick(self.frame_rate) / 1000.0
-
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    self.game_running = False
+            
+            if not self.fractal_plotted and not self.fractal_gen_in_progress:
+                self.event_m.key_bindings()
+                self.event_m.button_animations()
 
             self.screen_m.update()
+
             self.update()
 
         # pg.quit()
