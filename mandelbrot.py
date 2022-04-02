@@ -1,8 +1,5 @@
-import math
 import pygame as pg
-import pygame_gui
 
-GUI = pygame_gui.elements
 # FONT = pg.font.Font('fonts/LeagueSpartan-SemiBold.ttf', 32)
 
 SCREEN_WIDTH = 1200
@@ -24,11 +21,14 @@ class ScreenManager(object):
     def __init__(self, game_m):
         self.display_x = SCREEN_WIDTH
         self.display_y = SCREEN_HEIGHT
-        self.ui_manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.label_layout_rect = pg.Rect(30, 20, 100, 20)
+
         pg.display.set_caption('iMandelbrot')
+
         self.update_screen_resolution(self.display_x, self.display_y)
+
         self.game_m = game_m
+
+        self.font = pg.font.Font('fonts/LeagueSpartan-ExtraLight.ttf', 21)
 
     @staticmethod
     def update_screen_resolution(display_x, display_y):
@@ -36,22 +36,30 @@ class ScreenManager(object):
         screen = pg.display.set_mode([display_x, display_y], pg.DOUBLEBUF)
 
     def update(self):
-        screen.fill((255, 255, 255))
-        self.ui_manager.update(self.game_m.time_delta)
-        self.ui_manager.draw_ui(screen)
+        # screen.fill((255, 255, 255))
+        pg.display.update()
 
     def show_labels(self):
-        pass
+        print('Showing labels...')
+
+        self.percent_label = self.font.render(self.game_m.fp.percent, True, (0, 0, 0), (211, 211, 211))
+        self.percent_rect = self.percent_label.get_rect()
+        self.percent_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 70)
+        
+        screen.blit(self.percent_label, self.percent_rect)
 
 
+
+        
 class FunctionPlotter(object):
 
-    def __init__(self, game_m):
+    def __init__(self, game_m, screen_m):
         self.y_axis = HEIGHT // 2
         self.x_axis = WIDTH // 1.5 + 30
         self.scale = 150
         self.max_iter = 50
         self.game_m = game_m
+        self.screen_m = screen_m
 
     def plot_fractal(self):
         print("Plotting the fractal...")
@@ -83,7 +91,9 @@ class FunctionPlotter(object):
                 screen.set_at((x + ((SCREEN_WIDTH // 2) - (WIDTH // 2)), HEIGHT -
                               y + (SCREEN_HEIGHT // 8)), (self.color, self.color, self.color))
 
+                self.screen_m.show_labels()
                 pg.display.update()
+                pg.draw.rect(screen, (211, 211, 211), self.screen_m.percent_rect)
 
         print("Plotting successfuly completed!")
         self.game_m.fractal_plotted = True
@@ -114,11 +124,14 @@ class GameManager(object):
         self.screen_m = ScreenManager(self)
         self.fractal_plotted = False
         self.logo_img = pg.image.load('logo.png')
-        self.logo_img = pg.transform.scale(self.logo_img, (self.logo_img.get_width() // 3.5, self.logo_img.get_height() // 3.5))
+        self.logo_img = pg.transform.scale(
+            self.logo_img, (self.logo_img.get_width() // 3.5, self.logo_img.get_height() // 3.5))
+        self.font = pg.font.Font('fonts/LeagueSpartan-ExtraLight.ttf', 21)
+        screen.fill((255, 255, 255))
         self.main_loop()
 
     def update(self):
-        fp = FunctionPlotter(self)
+        self.fp = FunctionPlotter(self, self.screen_m)
         # If the fractal is not formed yet...
         if not self.fractal_plotted:
             # Placeholder rectangle to cover the area where the fractal will be generated
@@ -126,10 +139,17 @@ class GameManager(object):
                 ((SCREEN_WIDTH // 2) - (WIDTH // 2)), SCREEN_HEIGHT // 8, 400, 400))
 
             # Display the logo
-            screen.blit(self.logo_img, ((SCREEN_WIDTH // 2) - (self.logo_img.get_width() // 2), (SCREEN_HEIGHT // 8 + HEIGHT // 2) - (self.logo_img.get_height() // 2)))
+            screen.blit(self.logo_img, ((SCREEN_WIDTH // 2) - (self.logo_img.get_width() // 2),
+                        (SCREEN_HEIGHT // 8 + HEIGHT // 2) - (self.logo_img.get_height() // 2)))
 
-            self.screen_m.show_labels()
-            fp.plot_fractal()
+            
+            self.credit_label = self.font.render('Developed and Maintained by John Seong', True, (0, 0, 0), (211, 211, 211))
+            self.credit_rect = self.credit_label.get_rect()
+            self.credit_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50)
+
+            screen.blit(self.credit_label, self.credit_rect)
+
+            self.fp.plot_fractal()
 
     def main_loop(self):
         '''
@@ -140,10 +160,9 @@ class GameManager(object):
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.game_running = False
-                self.screen_m.ui_manager.process_events(event)
             self.screen_m.update()
             self.update()
-        pg.quit()
+        # pg.quit()
 
 
 # Run the code
