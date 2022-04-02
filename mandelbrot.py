@@ -55,7 +55,7 @@ class FunctionPlotter(object):
 
     def plot_fractal(self):
         print("Plotting the fractal...")
-        for x in range(WIDTH):
+        for x in range(WIDTH + 1):
             for y in range(HEIGHT // 2 + 1):
                 print(f'x: {x} | y: {y}')
                 # Map pixel coordinates to a complex number, thanks to a built-in python function complex()
@@ -71,7 +71,7 @@ class FunctionPlotter(object):
                 # Set the color in correlation with the number of iterations; 255 is the max. value in the grayscale spectrum...
                 self.color = 255 - int(self.m * 255 / self.max_iter)
 
-                self.percent = f'{round((x / WIDTH) * 100, 2)} %' if x != 399 and y != 200 else '100.0 %'
+                self.percent = f'{round((x / WIDTH) * 100, 2)} %' if x != 400 and y != 200 else '100.0 %'
 
                 print(self.percent)
 
