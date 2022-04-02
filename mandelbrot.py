@@ -45,6 +45,7 @@ class ScreenManager(object):
         self.game_m = game_m
 
         self.font = pg.font.Font('fonts/LeagueSpartan-ExtraLight.ttf', 21)
+        self.font_bold = pg.font.Font('fonts/LeagueSpartan-SemiBold.ttf', 18)
 
         self.mono_font_bold = pg.font.Font('fonts/RobotoMono-Medium.ttf', 18)
         self.mono_font_sm = pg.font.Font('fonts/RobotoMono-Regular.ttf', 14)
@@ -113,7 +114,7 @@ class ScreenManager(object):
 
         screen.blit(self.windowbar_title, self.windowbar_title_rect)
 
-    def display_console_content(self, state, equation = '', coordinates = '', whether_final = False):
+    def display_console_content(self, state, equation='', coordinates='', whether_final=False):
         match state:
             case 'EQUATION_LABEL':
 
@@ -127,13 +128,16 @@ class ScreenManager(object):
 
                 self.coordinatetitle_rect = self.coordinatetitle_label.get_rect()
 
-                self.equationtitle_rect.center = (self.windowbox_rect.x + 60, self.windowbar_rect.y + 50)
+                self.equationtitle_rect.center = (
+                    self.windowbox_rect.x + 60, self.windowbar_rect.y + 50)
 
-                self.coordinatetitle_rect.center = (self.windowbox_rect.x + 75, self.windowbar_rect.y + 100)
+                self.coordinatetitle_rect.center = (
+                    self.windowbox_rect.x + 75, self.windowbar_rect.y + 100)
 
                 screen.blit(self.equationtitle_label, self.equationtitle_rect)
 
-                screen.blit(self.coordinatetitle_label, self.coordinatetitle_rect)
+                screen.blit(self.coordinatetitle_label,
+                            self.coordinatetitle_rect)
 
             case 'EQUATION_CONTENT':
 
@@ -148,15 +152,18 @@ class ScreenManager(object):
                 self.coordinate_rect = self.coordinate_label.get_rect()
 
                 if not whether_final:
-                    self.equation_rect.center = (self.windowbox_rect.x + 200, self.windowbar_rect.y + 70)
-                    self.coordinate_rect.center = (self.windowbox_rect.x + 200, self.windowbar_rect.y + 100)
+                    self.equation_rect.center = (
+                        self.windowbox_rect.x + 200, self.windowbar_rect.y + 70)
+                    self.coordinate_rect.center = (
+                        self.windowbox_rect.x + 200, self.windowbar_rect.y + 100)
                 else:
-                    self.equation_rect.center = (self.windowbox_rect.x + 160, self.windowbar_rect.y + 50)
-                    self.coordinate_rect.center = (self.windowbox_rect.x + 260, self.windowbar_rect.y + 100)
+                    self.equation_rect.center = (
+                        self.windowbox_rect.x + 180, self.windowbar_rect.y + 50)
+                    self.coordinate_rect.center = (
+                        self.windowbox_rect.x + 260, self.windowbar_rect.y + 100)
 
                 screen.blit(self.equation_label, self.equation_rect)
                 screen.blit(self.coordinate_label, self.coordinate_rect)
-                
 
 
 class FunctionPlotter(object):
@@ -194,7 +201,8 @@ class FunctionPlotter(object):
 
                 self.percent = f'{round((x / WIDTH) * 100, 2)} %' if x != 400 and y != 200 else '100.0 %'
 
-                self.screen_m.display_console_content(EQUATION_CONTENT, self.equation, self.coordinates)
+                self.screen_m.display_console_content(
+                    EQUATION_CONTENT, self.equation, self.coordinates)
 
                 # Only plot the top portion of the fractal for performance reasons
                 screen.set_at((x + ((SCREEN_WIDTH // 2) - (WIDTH // 2)), y +
@@ -228,7 +236,8 @@ class FunctionPlotter(object):
             z = z ** 2 + c
 
             rounded_z = complex(round(z.real, 2), round(z.imag, 2))
-            equation = f'{rounded_z} = {rounded_z}^2 + {rounded_c}'.replace('j', 'i')
+            equation = f'{rounded_z} = {rounded_z}^2 + {rounded_c}'.replace(
+                'j', 'i')
 
             n += 1
 
@@ -239,6 +248,10 @@ class GameManager(object):
 
     def __init__(self):
         pg.init()
+
+        # Play the background music...
+        pg.mixer.music.load('music/guitar.mp3')
+        pg.mixer.music.play(-1)
 
         self.clock = pg.time.Clock()
         self.screen_m = ScreenManager(self)
@@ -266,6 +279,18 @@ class GameManager(object):
             # Placeholder rectangle to cover the area where the fractal will be generated
             pg.draw.rect(screen, BARELY_GRAY, pg.Rect(
                 ((SCREEN_WIDTH // 2) - (WIDTH // 2)), SCREEN_HEIGHT // 8, 400, 400))
+
+            # Display the top bar
+            pg.draw.rect(screen, BARELY_GRAY, pg.Rect(0, 0, SCREEN_WIDTH, 30))
+
+            self.top_bar_label = self.screen_m.font_bold.render('iMandelbrot', True, JET_BLACK)
+
+            self.top_bar_rect = self.top_bar_label.get_rect()
+
+            self.top_bar_rect.center = (
+                SCREEN_WIDTH // 2, 15)
+
+            screen.blit(self.top_bar_label, self.top_bar_rect)
 
             self.screen_m.display_console()
             self.screen_m.display_console_content(EQUATION_LABEL)
@@ -297,7 +322,8 @@ class GameManager(object):
 
             self.screen_m.display_console_content(EQUATION_LABEL)
 
-            self.screen_m.display_console_content(EQUATION_CONTENT, 'Zn+1 = Zn^2 + C','x: ALL POINTS | y: ALL POINTS', True)
+            self.screen_m.display_console_content(
+                EQUATION_CONTENT, 'Zn+1 = Zn^2 + C', 'x: ALL POINTS | y: ALL POINTS', True)
 
             pg.display.update()
 
