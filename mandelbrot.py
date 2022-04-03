@@ -359,18 +359,19 @@ class GameManager(object):
         self.fractal_plotted = False
         self.show_finished = False
         self.fractal_gen_in_progress = False
+        self.whether_default_show = True
 
         self.logo_img = pg.image.load('logo.png')
-        self.font = pg.font.Font('fonts/LeagueSpartan-ExtraLight.ttf', 21)
+        self.icon_img = pg.image.load('icon.png')
 
         self.logo_img = pg.transform.scale(
             self.logo_img, (self.logo_img.get_width() // 3.5, self.logo_img.get_height() // 3.5))
 
+        pg.display.set_icon(self.icon_img)
+
         screen.fill(BLEACHED_WHITE)
 
         self.event_m = EventManager(self, self.screen_m)
-
-        self.whether_default_show = True
 
         self.main_loop()
 
@@ -406,7 +407,7 @@ class GameManager(object):
 
             # Display the credit text
 
-            self.credit_label = self.font.render(
+            self.credit_label = self.screen_m.font.render(
                 'Developed and Maintained by John Seong', True, JET_BLACK, BARELY_GRAY)
 
             self.credit_rect = self.credit_label.get_rect()
