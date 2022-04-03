@@ -9,6 +9,7 @@ SCREEN_HEIGHT = 800
 
 WIDTH = 400
 HEIGHT = 400
+
 RE_START = -2
 RE_END = 1
 IM_START = -1
@@ -58,7 +59,6 @@ class ScreenManager(object):
         screen = pg.display.set_mode([display_x, display_y], pg.DOUBLEBUF)
 
     def update(self):
-        # screen.fill((255, 255, 255))
         pg.display.update()
 
     def show_onscreen_label(self, text):
@@ -223,6 +223,9 @@ class FunctionPlotter(object):
 
         for x in range(WIDTH + 1):
             for y in range(HEIGHT // 2 + 1):
+                # To let the OS know that the game isn't crashing but in an idle state...
+                pg.event.pump()
+
                 self.coordinates = f'x: {x} | y: {y}'
 
                 # Map pixel coordinates to a complex number, thanks to a built-in python function complex()
@@ -265,7 +268,9 @@ class FunctionPlotter(object):
                 pg.draw.rect(screen, JET_BLACK, self.screen_m.coordinate_rect)
 
         print("Plotting successfuly completed!")
+
         self.game_m.fractal_plotted = True
+        self.game_m.show_finished = True
 
     # EQUATION LINK: https://simple.wikipedia.org/wiki/Mandelbrot_set
     @staticmethod
@@ -291,6 +296,8 @@ class EventManager(object):
         self.game_m = game_m
         self.screen_m = screen_m
 
+        self.whether_endgame = False
+
         self.startbutton_container_rect = pg.Rect(
             (SCREEN_WIDTH // 2) - 100, (SCREEN_HEIGHT // 8) * 6.8, 200, 50)
 
@@ -307,7 +314,7 @@ class EventManager(object):
             if self.event.type == pg.QUIT:
                 self.game_m.game_running = False
 
-            if self.event.type == pg.MOUSEBUTTONDOWN:
+            if not self.whether_endgame and self.event.type == pg.MOUSEBUTTONDOWN:
 
                 # If the start button is pressed...
                 if self.whether_mouse_bound_x and self.whether_mouse_bound_y:
@@ -370,7 +377,7 @@ class GameManager(object):
     def update(self):
         global fp
         fp = FunctionPlotter(self, self.screen_m)
-
+        
         # If the fractal is not formed yet...
         if not self.fractal_plotted:
             # Placeholder rectangle to cover the area where the fractal will be generated
@@ -413,10 +420,6 @@ class GameManager(object):
                 self.screen_m.display_console_content(
                     EQUATION_CONTENT, 'Zn+1 = (Zn)^2 + C', 'x: ALL POINTS | y: ALL POINTS', True)
 
-            # fp.plot_fractal()
-
-            self.show_finished = True
-
         # Show the label indicating that the plotting process has ended...
         elif self.fractal_plotted and self.show_finished:
 
@@ -427,7 +430,11 @@ class GameManager(object):
             self.screen_m.display_console_content(
                 EQUATION_CONTENT, 'Zn+1 = (Zn)^2 + C', 'x: ALL POINTS | y: ALL POINTS', True)
 
-            pg.display.update()
+            # To cover up the start button container that was created at the beginning of the loop...
+            pg.draw.rect(screen, JET_BLACK,
+                         self.screen_m.startbutton_container_rect)
+
+            self.screen_m.update()
 
             self.show_finished = False
 
@@ -436,18 +443,28 @@ class GameManager(object):
         This is the main loop of the program, where most of the commands are executed!
         '''
         while self.game_running == True:
+            # To let the OS know that the game isn't crashing but in an idle state...
+            pg.event.pump()
+
             self.time_delta = self.clock.tick(self.frame_rate) / 1000.0
-            
+
+            self.event_m.key_bindings()
+
             if not self.fractal_plotted and not self.fractal_gen_in_progress:
-                self.event_m.key_bindings()
+                self.event_m.whether_endgame = False
                 self.event_m.button_animations()
+
+            else:
+                self.event_m.whether_endgame = True
 
             self.screen_m.update()
 
             self.update()
 
-        # pg.quit()
+        pg.quit()
 
 
 # Run the code
 game_m = GameManager()
+
+# IF THE LOADNG CURSOR IS KEEP SHOWING UP: https://stackoverflow.com/questions/20165492/pygame-window-not-responding-after-a-few-seconds
