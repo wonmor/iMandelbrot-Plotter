@@ -5,7 +5,7 @@
 
 ---
 
-## Public Release 1.1
+## Public Release 1.2.0
 **DEVELOPED** AND **MAINTAINED** BY **JOHN SEONG** • **MIT** LICENSE
 
 [Download for macOS](https://github.com/wonmor/iMandelbrot-Plotter/raw/main/installer/iMandelbrot_Mac.dmg) → Make sure to turn on the '**Run on Rosetta**' option on **M1 Macs**!
