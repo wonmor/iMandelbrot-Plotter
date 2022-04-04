@@ -31,4 +31,5 @@ For the sake of **optimization**, **iMandelbrot** only generates the coordinates
 ---
 
 ## Dependencies
-- **PyGame**
+- **PyGame** Cross-Platform Set of Modules
+- **PyObjC** Bidirectional Bridge
