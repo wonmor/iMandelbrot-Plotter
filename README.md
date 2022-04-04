@@ -10,8 +10,6 @@
 
 [Download for macOS](https://github.com/wonmor/iMandelbrot-Plotter/raw/main/installer/iMandelbrot_Mac.dmg)
 
-**WARNING!** WHEN RUNNING ON **M1** MAC, RIGHT CLICK THE ICON IN THE APPLICATION FOLDER AND GO TO PROPERTIES, THEN TICK THE '**RUN ON ROSETTA**' OPTION!
-
 ---
 ## Why Our Product Is Sexier Than Others
 
