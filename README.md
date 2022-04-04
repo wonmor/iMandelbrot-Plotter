@@ -21,7 +21,7 @@ For the sake of **optimization**, **iMandelbrot** only generates the coordinates
 
 <p float="left">
   
-  <img float="up" width="400" alt="Screen Shot 2022-04-03 at 8 03 51 PM" src="https://user-images.githubusercontent.com/35755386/161455118-ec4e5ec3-3572-448d-9ab1-d9beae77ab64.png">
+  <img style="align-self: center" width="400" alt="Screen Shot 2022-04-03 at 8 03 51 PM" src="https://user-images.githubusercontent.com/35755386/161455118-ec4e5ec3-3572-448d-9ab1-d9beae77ab64.png">
   
   <img width="400" alt="Screen Shot 2022-04-02 at 12 36 55 AM" src="https://user-images.githubusercontent.com/35755386/161366481-94a21a58-4b4b-4c26-81f8-26fd9cd4a3c1.png">
 </p>
