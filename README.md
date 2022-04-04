@@ -8,7 +8,7 @@
 ## Public Release 1.1
 **DEVELOPED** AND **MAINTAINED** BY **JOHN SEONG** • **MIT** LICENSE
 
-[!Download for macOS](https://github.com/wonmor/iMandelbrot-Plotter/raw/main/installer/iMandelbrot_Mac.dmg)
+[Download for macOS](https://github.com/wonmor/iMandelbrot-Plotter/raw/main/installer/iMandelbrot_Mac.dmg)
 
 **WARNING!** WHEN RUNNING ON AN ARM MAC, RIGHT CLICK THE ICON IN THE APPLICATION FOLDER AND GO TO PROPERTIES, THEN TICK THE 'RUN ON ROSETTA' OPTION!
 
