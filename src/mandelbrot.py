@@ -1,3 +1,53 @@
+#-----------------------------------------------------------------------------
+# Name:        iMandelbrot: An Interactive Module
+# Purpose:     iMandelbrot is a tool made out of PyGame that visualizes the nature of a Mandelbrot fractal!
+#
+# Author:      John Seong
+# Created:     April 6, 2022
+# Updated:     April 6, 2022
+#---------------------------------------------------------------------------------------#
+#   I think this project deserves a level 4+ because...
+#
+#   Features Added:
+#
+#   1. For the sake of optimization,
+#       iMandelbrot only generates the coordinates above the x-axis,
+#       basically duplicating to the corresponding coordinates below the horizontal line.
+#---------------------------------------------------------------------------------------#
+
+'''
+
+██╗███╗░░░███╗░█████╗░███╗░░██╗██████╗░███████╗██╗░░░░░██████╗░██████╗░░█████╗░████████╗
+██║████╗░████║██╔══██╗████╗░██║██╔══██╗██╔════╝██║░░░░░██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝
+██║██╔████╔██║███████║██╔██╗██║██║░░██║█████╗░░██║░░░░░██████╦╝██████╔╝██║░░██║░░░██║░░░
+██║██║╚██╔╝██║██╔══██║██║╚████║██║░░██║██╔══╝░░██║░░░░░██╔══██╗██╔══██╗██║░░██║░░░██║░░░
+██║██║░╚═╝░██║██║░░██║██║░╚███║██████╔╝███████╗███████╗██████╦╝██║░░██║╚█████╔╝░░░██║░░░
+╚═╝╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝╚═════╝░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝░╚════╝░░░░╚═╝░░░
+
+█▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▀ █▀▄   █▄▄ █▄█   ░░█ █▀█ █░█ █▄░█   █▀ █▀▀ █▀█ █▄░█ █▀▀
+█▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ ██▄ █▄▀   █▄█ ░█░   █▄█ █▄█ █▀█ █░▀█   ▄█ ██▄ █▄█ █░▀█ █▄█
+
+
+---------------------------------------------------------------------------------------
+
+
+██████╗░██╗░░░██╗████████╗██╗░░██╗░█████╗░███╗░░██╗  ██████╗░░░░░░███╗░░░█████╗░  ░█████╗░███╗░░██╗██████╗░
+██╔══██╗╚██╗░██╔╝╚══██╔══╝██║░░██║██╔══██╗████╗░██║  ╚════██╗░░░░████║░░██╔══██╗  ██╔══██╗████╗░██║██╔══██╗
+██████╔╝░╚████╔╝░░░░██║░░░███████║██║░░██║██╔██╗██║  ░█████╔╝░░░██╔██║░░██║░░██║  ███████║██╔██╗██║██║░░██║
+██╔═══╝░░░╚██╔╝░░░░░██║░░░██╔══██║██║░░██║██║╚████║  ░╚═══██╗░░░╚═╝██║░░██║░░██║  ██╔══██║██║╚████║██║░░██║
+██║░░░░░░░░██║░░░░░░██║░░░██║░░██║╚█████╔╝██║░╚███║  ██████╔╝██╗███████╗╚█████╔╝  ██║░░██║██║░╚███║██████╔╝
+╚═╝░░░░░░░░╚═╝░░░░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░╚═╝░░╚══╝  ╚═════╝░╚═╝╚══════╝░╚════╝░  ╚═╝░░╚═╝╚═╝░░╚══╝╚═════╝░
+
+░█████╗░██╗░░░██╗███████╗██████╗░  ██████╗░███████╗░██████╗░██╗░░░██╗██╗██████╗░███████╗██████╗░
+██╔══██╗██║░░░██║██╔════╝██╔══██╗  ██╔══██╗██╔════╝██╔═══██╗██║░░░██║██║██╔══██╗██╔════╝██╔══██╗
+██║░░██║╚██╗░██╔╝█████╗░░██████╔╝  ██████╔╝█████╗░░██║██╗██║██║░░░██║██║██████╔╝█████╗░░██║░░██║
+██║░░██║░╚████╔╝░██╔══╝░░██╔══██╗  ██╔══██╗██╔══╝░░╚██████╔╝██║░░░██║██║██╔══██╗██╔══╝░░██║░░██║
+╚█████╔╝░░╚██╔╝░░███████╗██║░░██║  ██║░░██║███████╗░╚═██╔═╝░╚██████╔╝██║██║░░██║███████╗██████╔╝
+░╚════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝  ╚═╝░░╚═╝╚══════╝░░░╚═╝░░░░╚═════╝░╚═╝╚═╝░░╚═╝╚══════╝╚═════╝░
+
+
+'''
+
 import pygame as pg
 
 import os
@@ -6,6 +56,7 @@ import platform
 
 '''
 CONSTANTS
+These include button sizes, screen sizes, the size of the graph, colour values, etc.
 '''
 
 SCREEN_WIDTH = 1200
@@ -24,7 +75,7 @@ WINDOW_BAR_BUTTON_GAP = 20
 WINDOW_BAR_TITLE_SIZE = 45
 
 PERSIAN_RED = (202, 48, 47)
-ASIAN_YELLOW = (252, 194, 1)  # Just a joke (I am Asian btw)
+ASIAN_YELLOW = (252, 194, 1)  # Just a joke (I am Asian by the way, so please do not cancel me out)
 TRUDEAU_GREEN = (19, 135, 21)  # Yes
 JET_BLACK = (0, 0, 0)
 SMOKEY_GRAY = (70, 70, 70)
@@ -38,6 +89,11 @@ START_BUTTON = 'START_BUTTON'
 
 # Pygame has built-in collider detection for rect type objects
 
+
+'''
+ScreenManager class dictates the behaviour of all on-screen UI elements on the program,
+which include buttons, images, and texts.
+'''
 
 class ScreenManager(object):
 
@@ -61,6 +117,10 @@ class ScreenManager(object):
         self.mono_font_sm = pg.font.Font(
             GameManager.get_path('src/fonts/RobotoMono-Regular.ttf'), 14)
 
+    '''
+    This is a function that updates the resolution of the program.
+    '''
+
     @staticmethod
     def update_screen_resolution(display_x, display_y):
         global screen
@@ -69,6 +129,10 @@ class ScreenManager(object):
     def update(self):
         pg.display.update()
 
+    '''
+    This is a function that displays an on-screen label on the program, specifically on the centre portion of the display
+    '''
+
     def show_onscreen_label(self, text):
 
         self.onscreen_label = self.font.render(
@@ -76,6 +140,7 @@ class ScreenManager(object):
 
         self.onscreen_rect = self.onscreen_label.get_rect()
 
+        # This will set the relative position of the label to the centre of the display despite the potential resolution changes that can be made...
         self.onscreen_rect.center = (
             SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 70)
 
@@ -126,6 +191,12 @@ class ScreenManager(object):
 
     # Handles the individual behaviour of buttons and different UI elements
     def display_console_content(self, state, equation='', coordinates='', whether_final=False, whether_hover=False):
+        '''
+        ONLY IN PYTHON 3.10 AND OVER: MATCH-CASE STATEMENT
+        A generic state-finite machine that dictates the behaviour of each text on the console depending on the state of the program.
+        When the plotting process has not yet started, the texts on the console will display a static information that indicates that
+        e.g. the domain and the range of the function will be all points, scale, equation, etc.
+        '''
         match state:
             case 'EQUATION_LABEL':
 
@@ -216,6 +287,9 @@ class ScreenManager(object):
 class FunctionPlotter(object):
 
     def __init__(self, game_m, screen_m):
+        '''
+        Set up initial values such as the max iteration count or the scale of the Mandelbrot fractal
+        '''
         self.y_axis = HEIGHT // 2
         self.x_axis = WIDTH // 1.5 + 30
 
@@ -226,17 +300,40 @@ class FunctionPlotter(object):
         self.screen_m = screen_m
 
     def plot_fractal(self):
+        # Print out a message to debug console to indicate that the plotting function process is running....
         print("Plotting the fractal...")
+
+        # This is a boolean value that determines whether the plotting function process is running or not...
         self.game_m.fractal_gen_in_progress = True
 
+        # For all x-values in the x-axis of the display and y-values in the y-axis of the display...
         for x in range(WIDTH + 1):
             for y in range(HEIGHT // 2 + 1):
+
                 # To let the OS know that the game isn't crashing but in an idle state...
                 pg.event.pump()
 
+                # Save the current coordinates to print them out on the in-game console...
                 self.coordinates = f'x: {x} | y: {y}'
 
-                # Map pixel coordinates to a complex number, thanks to a built-in python function complex()
+                '''
+                Normalize pixel coordinates to a complex number,
+                thanks to a built-in python function complex(),
+                which contains two variables: real and imaginary numbers.
+
+                The reason we convert the y-axis of the plane to imaginary numbers and x-axis to the real numbers is pretty obvious:
+                because that's what the complex plane should look like.
+
+                MORE EXPLANATION ABOUT COMPLEX PLANES: 
+                https://en.wikipedia.org/wiki/Complex_plane
+
+                The complex() function in Python basically works in the same way the real life complex numbers work.
+                In a nutshell, i (in this case, j) = sqrt(-1) 
+                and the Mandelbrot fractal is generated upon a complex plane
+                where the y-axis is the imaginary number axis
+                and the x-axis is the real number axis.
+                '''
+
                 self.c = complex(float(x - self.x_axis) / self.scale,
                                  float(y - self.y_axis) / self.scale)
 
@@ -249,6 +346,7 @@ class FunctionPlotter(object):
                 # Set the color in correlation with the number of iterations; 255 is the max. value in the grayscale spectrum...
                 self.color = 255 - int(self.m[0] * 255 / self.max_iter)
 
+                # Equation is the second value in the list that is returned by the mandelbrot_eqt function...
                 self.equation = self.m[1]
 
                 self.percent = f'{round((x / WIDTH) * 100, 2)} %' if x != 400 and y != 200 else '100.0 %'
@@ -264,6 +362,7 @@ class FunctionPlotter(object):
                 screen.set_at((x + ((SCREEN_WIDTH // 2) - (WIDTH // 2)), HEIGHT -
                               y + (SCREEN_HEIGHT // 8)), (self.color, self.color, self.color))
 
+                # Show the percentage label and update it every iteration...
                 self.screen_m.show_onscreen_label(self.percent)
 
                 pg.display.update()
@@ -280,7 +379,24 @@ class FunctionPlotter(object):
         self.game_m.fractal_plotted = True
         self.game_m.show_finished = True
 
-    # EQUATION LINK: https://simple.wikipedia.org/wiki/Mandelbrot_set
+    '''
+    EQUATION LINK AND FURTHER EXPLANATION: https://simple.wikipedia.org/wiki/Mandelbrot_set
+
+    Basically the way Mandelbrot fractal works is that
+    n, which is the index (should be a positive integer) of the complex number Z will start from 0.
+    Then, it will intercept with another complex number which is C, and together, both added, will be defined as the new Z. 
+    This Z, will again go through the same equation with this time a different n, which will increase by an increment of 1.
+    This iteration process will continue until it reaches the count of the max iteration, which was determined previously in the __init__ function.
+    The Z values that will "blow up," a layman term indicating that it approaches either negative or positive infinity will NOT be plotted on the graph,
+    which we set as a numerical value in this case because computer science does not accept any "conceptual values."
+    The colours are defined on the grayscale based upon the size of the complex number Z.
+
+    In this case though, to maximize the performance and speed of plotting the set,
+    and considering that the fully graphed version of a Mandelbrot set is symmetrical across the x-axis,
+    we are just literally copying the top part of the Mandelbrot set onto the bottom part, to save the resources since Python is not optimized for heavy computation.
+    (To perform full-on computation with superior speed, a total revamp of the code is needed as it needs to implement modules such as NumPy or Cython: a combination of Python and C language).
+    '''
+
     @staticmethod
     def mandelbrot_eqt(c, rounded_c, max_iter):
         z = 0
@@ -297,6 +413,10 @@ class FunctionPlotter(object):
 
         return [n, equation]
 
+'''
+EventManager is a clss that dictates the behaviour of all major events that happen in the program.
+such as the key bindings and the animations that will happen when e.g. a mouse cursor is hovering over a button.
+'''
 
 class EventManager(object):
 
@@ -353,6 +473,11 @@ class EventManager(object):
             self.screen_m.display_console_content(
                 START_BUTTON, '', '', False, False)
 
+'''
+GameManager is the first class that is instantiated when the program runs.
+which includes the update method that runs every frame, plotting the function only when it is supposed to do so.
+It also sets the route of different elements in the game such as the logo or the icon image.
+'''
 
 class GameManager(object):
 
@@ -450,6 +575,11 @@ class GameManager(object):
 
     # Resolve Py2App Crashing Error in Finder but not when opening it using Terminal: https://stackoverflow.com/questions/63611190/python-macos-builds-run-from-terminal-but-crash-on-finder-launch
 
+    '''
+    This function returns the corresponding relative path of the file name that is entered depending on the operating system.
+    Specifically designed for macOS, as it uses a different kind of path system in comparison to Windows.
+    '''
+    
     @staticmethod
     def get_path(filename):
         name = os.path.splitext(filename)[0]
@@ -486,7 +616,7 @@ class GameManager(object):
 
             self.update()
 
-        pg.quit()
+        # pg.quit()
 
 
 # Run the code
