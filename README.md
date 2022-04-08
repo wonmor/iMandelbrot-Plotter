@@ -10,6 +10,8 @@
 
 [Download for **macOS**](https://github.com/wonmor/iMandelbrot-Plotter/raw/main/installer/iMandelbrot_Mac.dmg)
 
+[Download for **Windows**](https://github.com/wonmor/iMandelbrot-Plotter/raw/main/installer/iMandelbrot_Windows.zip)
+
 ---
 ## Why Our Product Is Sexier Than Others
 
