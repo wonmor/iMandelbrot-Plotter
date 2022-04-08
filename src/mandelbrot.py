@@ -590,6 +590,8 @@ class GameManager(object):
             from AppKit import NSBundle
             file = NSBundle.mainBundle().pathForResource_ofType_(name, ext)
             return file or os.path.realpath(filename)
+        elif platform.system() == "win32":
+            return filename.replace("/", "\\")
         else:
             return os.path.realpath(filename)
 
