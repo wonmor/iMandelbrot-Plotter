@@ -38,38 +38,26 @@ For the sake of **optimization**, **iMandelbrot** only generates the coordinates
 
 ## Version Guide
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-### 1. **Alpha Release 0.1.0**
-=======
-###**Alpha Release 0.1.0**
->>>>>>> parent of df20cd0 (Update README.md)
-=======
-###**Alpha Release 0.1.0**
->>>>>>> parent of df20cd0 (Update README.md)
-=======
-###**Alpha Release 0.1.0**
->>>>>>> parent of df20cd0 (Update README.md)
+### **Alpha Release 0.1.0**
 
 - [x] Create a class that plots the Mandelbrot fractal using the traditional method of plotting both over and under the x-axis
 
 ---
 
-### 2. **Public Release 1.0.0**
+### **Public Release 1.0.0**
 
 - [x] Add a console window that displays information regarding the equation and coordinates
 - [x] Revamp the GUI and make it more visually appealing
 
 ---
 
-### 3. **Public Release 1.1.0**
+### **Public Release 1.1.0**
 
 - [x] Add a macOS installer for the sake of convenience
 - [x] Improve the time complexity by only plotting the top half of the set and copying to the bottom
 
 ---
 
-### 4. **Public Release 1.2.0**
+### **Public Release 1.2.0**
 
 - [x] Add a Windows installer for users who are obsessed with Bill Gates' janky operating system
