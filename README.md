@@ -6,7 +6,7 @@
 ---
 
 ## Public Release 1.2.0
-**DEVELOPED** AND **MAINTAINED** BY **JOHN SEONG** • **MIT** LICENSE
+**Developed** and **Maintained** by **John Seong** • **MIT** License
 
 [Download for **macOS**](https://github.com/wonmor/iMandelbrot-Plotter/raw/main/installer/iMandelbrot_Mac.dmg)
 
