@@ -39,7 +39,11 @@ For the sake of **optimization**, **iMandelbrot** only generates the coordinates
 ## Version Guide
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ### 1. **Alpha Release 0.1.0**
+=======
+###**Alpha Release 0.1.0**
+>>>>>>> parent of df20cd0 (Update README.md)
 =======
 ###**Alpha Release 0.1.0**
 >>>>>>> parent of df20cd0 (Update README.md)
