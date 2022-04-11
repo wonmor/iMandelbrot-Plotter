@@ -143,7 +143,7 @@ class ScreenManager(object):
 
     def update(self):
         '''
-        This function runs every frame and updates the display
+        This method runs every frame and updates the display
         
         Parameters
         ----------
@@ -159,7 +159,7 @@ class ScreenManager(object):
 
     def show_onscreen_label(self, text):
         '''
-        This is a function that displays an on-screen label on the program, specifically on the centre portion of the display
+        This is a method that displays an on-screen label on the program, specifically on the centre portion of the display
         
         Parameters
         ----------
@@ -169,7 +169,6 @@ class ScreenManager(object):
         Returns
         -------
         None
-
         '''
         self.onscreen_label = self.font.render(
             text, True, JET_BLACK, BARELY_GRAY)
@@ -184,7 +183,7 @@ class ScreenManager(object):
 
     def display_console(self):
         '''
-        This is a function that displays an on-screen label on the program, specifically on the centre portion of the display
+        This is a method that displays an on-screen label on the program, specifically on the centre portion of the display
         
         Parameters
         ----------
@@ -193,7 +192,6 @@ class ScreenManager(object):
         Returns
         -------
         None
-
         '''
         self.windowbox_rect = pg.Rect(
             ((SCREEN_WIDTH // 2) - (WIDTH // 2)), (SCREEN_HEIGHT // 8) * 5.5, 400, 200)
@@ -260,7 +258,6 @@ class ScreenManager(object):
         Returns
         -------
         None
-
         '''
         match state:
             case 'EQUATION_LABEL':
@@ -377,7 +374,7 @@ class FunctionPlotter(object):
 
     def plot_fractal(self):
         '''
-        A function that plots the Mandelbrot set based upon the x and y coordinates of the display
+        A method that plots the Mandelbrot set based upon the x and y coordinates of the display
         
         Parameters
         ----------
@@ -501,7 +498,6 @@ class FunctionPlotter(object):
         List
             Contains n, which represents the number of iteration, as well as the equation, which is a String value that contains the full decrypted information
                 of all variables that the program is plugging in
-
         '''
         z = 0
         n = 0
@@ -525,6 +521,21 @@ such as the key bindings and the animations that will happen when e.g. a mouse c
 class EventManager(object):
 
     def __init__(self, game_m, screen_m):
+        '''
+        An initializer method that receives the GameManager and ScreenManager objects as well as setting up the boundaries for the start button
+        
+        Parameters
+        ----------
+        game_m: Instance of a class
+            GameManager object
+
+        screen_m: Instance of a class
+            ScreenManager object
+
+        Returns
+        -------
+        None
+        '''
         self.game_m = game_m
         self.screen_m = screen_m
 
@@ -534,6 +545,17 @@ class EventManager(object):
             (SCREEN_WIDTH // 2) - 100, (SCREEN_HEIGHT // 8) * 6.8, 200, 50)
 
     def key_bindings(self):
+        '''
+        A method that defines the button on-click behaviours
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
         self.mouse_pos = pg.mouse.get_pos()
 
         # Determine whether the mouse pointer is within the boundary of the start button or not... self.mouse_pos[0] => mouse's x position / self.mouse_pos[1] => mouse's y position
@@ -566,7 +588,17 @@ class EventManager(object):
                     fp.plot_fractal()
 
     def button_animations(self):
+        '''
+        A method that sets up the button animations; when the mouse pointer is hovering above the button, it swaps the sprites
+        
+        Parameters
+        ----------
+        None
 
+        Returns
+        -------
+        None
+        '''
         if self.whether_mouse_bound_x and self.whether_mouse_bound_y:
             # Highlight the button when mouse pointer is hovering above...
             self.screen_m.display_console_content(
@@ -586,6 +618,18 @@ It also sets the route of different elements in the game such as the logo or the
 class GameManager(object):
 
     def __init__(self):
+        '''
+        An initializer that runs at the start of the game. Defines the boolean values that will be used to represent each state of the game,
+        as well as the clock that will run throughout the game to get the delta time.
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
         pg.init()
 
         self.clock = pg.time.Clock()
@@ -614,6 +658,18 @@ class GameManager(object):
         self.main_loop()
 
     def update(self):
+        '''
+        A method that runs every frame. Instantiates the FunctionPlotter class, as well as setting up the default behaviour
+        of both the console window and the area where the fractal will be graphed (displaying a logo)
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
         global fp
         fp = FunctionPlotter(self, self.screen_m)
 
@@ -679,13 +735,22 @@ class GameManager(object):
 
     # Resolve Py2App Crashing Error in Finder but not when opening it using Terminal: https://stackoverflow.com/questions/63611190/python-macos-builds-run-from-terminal-but-crash-on-finder-launch
 
-    '''
-    This function returns the corresponding relative path of the file name that is entered depending on the operating system.
-    Specifically designed for macOS, as it uses a different kind of path system in comparison to Windows.
-    '''
-    
     @staticmethod
     def get_path(filename):
+        '''
+        A static method that returns the corresponding relative path of the file name that is entered depending on the operating system.
+        Specifically designed for macOS, as it uses a different kind of path system in comparison to Windows.
+        
+        Parameters
+        ----------
+        filename: String
+            Gets the path of a specific file that the program is looking for
+
+        Returns
+        -------
+        String
+            Returns a string of a path that is converted depending on the user's operating system
+        '''
         name = os.path.splitext(filename)[0]
         ext = os.path.splitext(filename)[1]
 
@@ -702,6 +767,16 @@ class GameManager(object):
     def main_loop(self):
         '''
         This is the main loop of the program, where most of the commands are executed!
+        It invovles the calculation of a delta time, deciding whether to enable the button animations or not,
+        and running the update method in each class.
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
         '''
         while self.game_running == True:
             # To let the OS know that the game isn't crashing but in an idle state...

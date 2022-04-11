@@ -11,18 +11,31 @@ WRITTEN BY JOHN SEONG
 MAIN FILE FOR THE GAME => src/mandelbrot.py
 '''
 
-# Get the relative path of the file name that is inputted into a function...
 def get_path(filename):
-        name = os.path.splitext(filename)[0]
-        ext = os.path.splitext(filename)[1]
+    '''
+    A function that returns the corresponding relative path of the file name that is entered depending on the operating system.
+    Specifically designed for macOS, as it uses a different kind of path system in comparison to Windows.
+    
+    Parameters
+    ----------
+    filename: String
+        Gets the path of a specific file that the program is looking for
 
-        # For macOS only...
-        if platform.system() == "Darwin" or platform.system() == "Darwin":
-            from AppKit import NSBundle
-            file = NSBundle.mainBundle().pathForResource_ofType_(name, ext)
-            return file or os.path.realpath(filename)
-        else:
-            return os.path.realpath(filename)
+    Returns
+    -------
+    String
+        Returns a string of a path that is converted depending on the user's operating system
+    '''
+    name = os.path.splitext(filename)[0]
+    ext = os.path.splitext(filename)[1]
+
+    # For macOS only...
+    if platform.system() == "Darwin" or platform.system() == "Darwin":
+        from AppKit import NSBundle
+        file = NSBundle.mainBundle().pathForResource_ofType_(name, ext)
+        return file or os.path.realpath(filename)
+    else:
+        return os.path.realpath(filename)
 
 # Define the constants that will be used in generating the .app file... first one being where the main python file is located at...
 APP = [get_path('src/mandelbrot.py')]
