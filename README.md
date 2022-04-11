@@ -32,7 +32,13 @@ For the sake of **optimization**, **iMandelbrot** only generates the coordinates
 
 ## Dependencies
 - **PyGame** Cross-Platform Set of Modules
-- **PyObjC** Bidirectional Bridge
+- **PyObjC** Bidirectional Bridge (Only if you would like to run on macOS)
+
+---
+
+## How to Run
+
+Either open one of the precompiled macOS or Windows setup utility in the ```installer``` folder, or go to the ```src``` folder and open the ```mandelbrot.py``` file directly.
 
 ---
 
