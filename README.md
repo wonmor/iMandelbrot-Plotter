@@ -38,7 +38,7 @@ For the sake of **optimization**, **iMandelbrot** only generates the coordinates
 
 ## Version Guide
 
-###**Alpha Release 0.1.0**
+### **Alpha Release 0.1.0**
 
 - [x] Create a class that plots the Mandelbrot fractal using the traditional method of plotting both over and under the x-axis
 
