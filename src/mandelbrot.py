@@ -4,7 +4,7 @@
 #
 # Author:      John Seong
 # Created:     April 6, 2022
-# Updated:     April 6, 2022
+# Updated:     April 11, 2022
 #---------------------------------------------------------------------------------------#
 #   I think this project deserves a level 4+ because...
 #
@@ -13,6 +13,10 @@
 #   1. For the sake of optimization,
 #       iMandelbrot only generates the coordinates above the x-axis,
 #       basically duplicating to the corresponding coordinates below the horizontal line.
+#
+#   2. The user interface is very intuitive that even a kindergardener can immediately tell which is which;
+#       the program additionally displays what is going on behind the scenes
+#       to validate that the Mandelbrot set equation indeed works perfectly in real life.
 #---------------------------------------------------------------------------------------#
 
 '''
@@ -30,21 +34,7 @@
 
 ---------------------------------------------------------------------------------------
 
-
-██████╗░██╗░░░██╗████████╗██╗░░██╗░█████╗░███╗░░██╗  ██████╗░░░░░░███╗░░░█████╗░  ░█████╗░███╗░░██╗██████╗░
-██╔══██╗╚██╗░██╔╝╚══██╔══╝██║░░██║██╔══██╗████╗░██║  ╚════██╗░░░░████║░░██╔══██╗  ██╔══██╗████╗░██║██╔══██╗
-██████╔╝░╚████╔╝░░░░██║░░░███████║██║░░██║██╔██╗██║  ░█████╔╝░░░██╔██║░░██║░░██║  ███████║██╔██╗██║██║░░██║
-██╔═══╝░░░╚██╔╝░░░░░██║░░░██╔══██║██║░░██║██║╚████║  ░╚═══██╗░░░╚═╝██║░░██║░░██║  ██╔══██║██║╚████║██║░░██║
-██║░░░░░░░░██║░░░░░░██║░░░██║░░██║╚█████╔╝██║░╚███║  ██████╔╝██╗███████╗╚█████╔╝  ██║░░██║██║░╚███║██████╔╝
-╚═╝░░░░░░░░╚═╝░░░░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░╚═╝░░╚══╝  ╚═════╝░╚═╝╚══════╝░╚════╝░  ╚═╝░░╚═╝╚═╝░░╚══╝╚═════╝░
-
-░█████╗░██╗░░░██╗███████╗██████╗░  ██████╗░███████╗░██████╗░██╗░░░██╗██╗██████╗░███████╗██████╗░
-██╔══██╗██║░░░██║██╔════╝██╔══██╗  ██╔══██╗██╔════╝██╔═══██╗██║░░░██║██║██╔══██╗██╔════╝██╔══██╗
-██║░░██║╚██╗░██╔╝█████╗░░██████╔╝  ██████╔╝█████╗░░██║██╗██║██║░░░██║██║██████╔╝█████╗░░██║░░██║
-██║░░██║░╚████╔╝░██╔══╝░░██╔══██╗  ██╔══██╗██╔══╝░░╚██████╔╝██║░░░██║██║██╔══██╗██╔══╝░░██║░░██║
-╚█████╔╝░░╚██╔╝░░███████╗██║░░██║  ██║░░██║███████╗░╚═██╔═╝░╚██████╔╝██║██║░░██║███████╗██████╔╝
-░╚════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝  ╚═╝░░╚═╝╚══════╝░░░╚═╝░░░░╚═════╝░╚═╝╚═╝░░╚═╝╚══════╝╚═════╝░
-
+Python 3.10 and above required to run this program!
 
 '''
 
@@ -98,6 +88,19 @@ which include buttons, images, and texts.
 class ScreenManager(object):
 
     def __init__(self, game_m):
+        '''
+        This function is an intializer that defines the paths for the fonts and defines the screen resolution
+        
+        Parameters
+        ----------
+        game_m: Instance of a class
+            GameManager object
+
+        Returns
+        -------
+        None
+
+        '''
         self.display_x = SCREEN_WIDTH
         self.display_y = SCREEN_HEIGHT
 
@@ -117,24 +120,57 @@ class ScreenManager(object):
         self.mono_font_sm = pg.font.Font(
             GameManager.get_path('src/fonts/RobotoMono-Regular.ttf'), 14)
 
-    '''
-    This is a function that updates the resolution of the program.
-    '''
 
     @staticmethod
     def update_screen_resolution(display_x, display_y):
+        '''
+        A static method that updates the resolution of a screen
+        
+        Parameters
+        ----------
+        display_x: Integer
+            The width of the screen
+        display_y: Integer
+            The height of the screen
+
+        Returns
+        -------
+        None
+
+        '''
         global screen
         screen = pg.display.set_mode([display_x, display_y], pg.DOUBLEBUF)
 
     def update(self):
+        '''
+        This function runs every frame and updates the display
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        '''
         pg.display.update()
 
-    '''
-    This is a function that displays an on-screen label on the program, specifically on the centre portion of the display
-    '''
 
     def show_onscreen_label(self, text):
+        '''
+        This is a function that displays an on-screen label on the program, specifically on the centre portion of the display
+        
+        Parameters
+        ----------
+        text: String
+            A user-defined text that can be displayed on the centre portion of the display
 
+        Returns
+        -------
+        None
+
+        '''
         self.onscreen_label = self.font.render(
             text, True, JET_BLACK, BARELY_GRAY)
 
@@ -147,7 +183,18 @@ class ScreenManager(object):
         screen.blit(self.onscreen_label, self.onscreen_rect)
 
     def display_console(self):
+        '''
+        This is a function that displays an on-screen label on the program, specifically on the centre portion of the display
+        
+        Parameters
+        ----------
+        None
 
+        Returns
+        -------
+        None
+
+        '''
         self.windowbox_rect = pg.Rect(
             ((SCREEN_WIDTH // 2) - (WIDTH // 2)), (SCREEN_HEIGHT // 8) * 5.5, 400, 200)
 
@@ -196,6 +243,24 @@ class ScreenManager(object):
         A generic state-finite machine that dictates the behaviour of each text on the console depending on the state of the program.
         When the plotting process has not yet started, the texts on the console will display a static information that indicates that
         e.g. the domain and the range of the function will be all points, scale, equation, etc.
+        
+        Parameters
+        ----------
+        state: String
+            Current state of the state-finite machine
+        equation: String
+            Equation that will be displayed on the in-game console window
+        coordinates: String
+            Coordinates that will show up on the in-game console window
+        whether_final: Boolean
+            A boolean variable that definees whether the program is in its final stage after all the graph plotting has completed
+        whether_hover: Boolean
+            A boolean variable that defines whether the mouse is hovering over the button or not (Collision detection)
+
+        Returns
+        -------
+        None
+
         '''
         match state:
             case 'EQUATION_LABEL':
@@ -289,6 +354,17 @@ class FunctionPlotter(object):
     def __init__(self, game_m, screen_m):
         '''
         Set up initial values such as the max iteration count or the scale of the Mandelbrot fractal
+        
+        Parameters
+        ----------
+        game_m: Instance of a class
+            GameManager object
+        screen_m: Instance of a class
+            ScreenManager object
+
+        Returns
+        -------
+        None
         '''
         self.y_axis = HEIGHT // 2
         self.x_axis = WIDTH // 1.5 + 30
@@ -300,6 +376,17 @@ class FunctionPlotter(object):
         self.screen_m = screen_m
 
     def plot_fractal(self):
+        '''
+        A function that plots the Mandelbrot set based upon the x and y coordinates of the display
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
         # Print out a message to debug console to indicate that the plotting function process is running....
         print("Plotting the fractal...")
 
@@ -399,6 +486,23 @@ class FunctionPlotter(object):
 
     @staticmethod
     def mandelbrot_eqt(c, rounded_c, max_iter):
+        '''
+        Set up initial values such as the max iteration count or the scale of the Mandelbrot fractal
+        
+        Parameters
+        ----------
+        c:
+            A complex number that contains both the real and imaginary axes, converted from display coordinates
+        rounded_c:
+            The same as the C value but is rounded up to two signicant digits
+
+        Returns
+        -------
+        List
+            Contains n, which represents the number of iteration, as well as the equation, which is a String value that contains the full decrypted information
+                of all variables that the program is plugging in
+
+        '''
         z = 0
         n = 0
 
