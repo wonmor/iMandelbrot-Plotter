@@ -17,7 +17,7 @@
 ## Why Our Product Is Sexier Than Others
 
 1. For the sake of **optimization**, **iMandelbrot** only generates the coordinates above the x-axis — basically duplicating to the corresponding coordinates below the horizontal line.
-2. The user interface is very ***intuitive*** that even a kindergardener can immediately tell which is which — the program additionally displays what is going on **behind the scenes** to validate that the Mandelbrot set equation indeed works perfectly in real life.
+2. The user interface is very **intuitive** that even a kindergardener can immediately tell which is which — the program additionally displays what is going on **behind the scenes** to validate that the Mandelbrot set equation indeed works perfectly in real life.
 
 <img width="800" alt="Screen Shot 2022-04-02 at 1 26 37 PM" src="https://user-images.githubusercontent.com/35755386/161394343-fbd4086c-8990-4091-a175-37a529f15bf5.png">
 
