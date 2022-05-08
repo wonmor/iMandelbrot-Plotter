@@ -1,7 +1,6 @@
-# iMandelbrot: An Interactive Module
-**iMandelbrot** is a **learning aid** purely made out of **PyGame** that visualizes the nature of a **Mandelbrot** fractal!
-
 ![logo](https://user-images.githubusercontent.com/35755386/161361789-583ccb1e-7786-4b43-a7b3-f1d0503d7e75.png)
+
+**iMandelbrot** is a **learning aid** purely made out of **PyGame** that visualizes the nature of a **Mandelbrot** fractal!
 
 ---
 
